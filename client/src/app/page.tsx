@@ -11,18 +11,18 @@ export default function Home() {
         <Header />
       </div>
       <Gradient />
-      <div className="flex flex-col h-screen pt-60 ">
-        <div className="flex-1 flex flex-col items-center px-40">
-          <div className="text-4xl font-bold text-center">
+      <div className="flex flex-col h-screen md:pt-60 pt-36">
+        <div className="flex-1 flex flex-col items-center md:px-40 px-10">
+          <div className="md:text-4xl text-2xl font-bold text-center">
             Unicorns are not just a myth, the next one can be in your portfolio
           </div>
-          <div className="text-sm font-semibold text-center w-[30%] pt-10">
+          <div className="text-sm font-semibold text-center md:w-1/2 lg:w-1/3 w-3/4 pt-10">
             Empowering startups to soar and investors to explore
             your gateway to innovation and opportunity
-            <div className="pt-2">Discover, invest, and grow together.</div>
+            <div className="md:pt-2 pt-1">Discover, invest, and grow together.</div>
           </div>
-          <div className="w-[100%] flex mt-20 p-10 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl gap-10">
-            <div className="flex-1 text-3xl font-bold">
+          <div className="w-[100%] flex flex-col md:flex-row md:mt-20 mt-10 md:p-10 p-5 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl gap-10">
+            <div className="flex-1 md:text-3xl text-xl font-bold">
               <div>Fuel your Vision:</div>
               <div>Access Funding, and Growth Opportunities</div>
             </div>
@@ -34,26 +34,26 @@ export default function Home() {
               <div>Whether you"re in the early stages or ready to grow, we’re here to help you succeed every step of the way.</div>
             </div>
           </div>
-          <div className="mt-20 text-3xl font-bold w-[100%]">
+          <div className="md:mt-20 mt-10 md:text-3xl text-xl font-bold w-[100%]">
             <div>Discover Tomorrow’s Success Stories: </div>
             <div>Invest in Curated, High-Potential Startups</div>
           </div>
-          <div className="w-[100%] mt-20">
-            <div className="w-[50%]">
+          <div className="w-full md:mt-20 mt-10">
+            <div className="w-full md:w-1/2">
               <div>Find your next big opportunity with ease. </div>
               <div>Next Unicorn handpicks innovative startups with high growth potential, giving you transparent access to vetted ventures.</div>
               <div>Join a community of forward-thinking investors, and be part of the next wave of groundbreaking success stories.</div>
             </div>
           </div>
-          <div className="text-3xl font-bold text-left w-[100%] mt-20">
+          <div className="md:text-3xl text-xl font-bold text-left w-[100%] mt-20">
             Interested but have questions?
           </div>
-          <div className="w-[100%] flex flex-col mt-20 p-10 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl gap-10 items-center">
-            <div className="w-[100%] flex gap-10">
+          <div className="w-full flex flex-col md:mt-20 mt-10 md:p-10 p-5 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl gap-10 items-center">
+            <div className="w-[100%] flex gap-10 flex-col md:flex-row">
               <input type="text" placeholder="First Name" className="p-4 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl bg-transparent flex-1" />
               <input type="text" placeholder="Last Name" className="p-4 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl bg-transparent flex-1" />
             </div>
-            <div className="w-[100%] flex gap-10">
+            <div className="w-[100%] flex gap-10 flex-col md:flex-row">
               <input type="text" placeholder="Email" className="p-4 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl bg-transparent flex-1" />
               <input type="text" placeholder="Phone Number" className="p-4 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl bg-transparent flex-1" />
             </div>
