@@ -101,8 +101,20 @@ function restrict(req, res, next) {
 app.get('/logout', function(req, res){
   // destroy the user's session to log them out
   // will be re-created next request
+  nextlink = 'investor';
+  switch (req.session?.user?.type) {
+    case INVESTOR:
+      nextlink = 'investor';
+      break;
+    case COMPANY:
+      nextlink = 'company';
+      break;
+    case ADMIN:
+      nextlink = 'admin';
+      break;
+  }
   req.session.destroy(function(){
-    res.redirect('/');
+    res.redirect(`${nextlink}/login`);
   });
 });
 
@@ -113,7 +125,8 @@ app.get('/', function(req, res){
 });
 
 app.get('/restricted', restrict, function(req, res){
-  res.send('Wahoo! restricted area, click to <a href="/logout">logout</a>');
+  console.log(req.session);
+  res.send(`Wahoo! restricted area ${req.session?.user?.name}, click to <a href="/logout">logout</a>`);
 });
 
 app.get('/investor/login', function(req, res){
