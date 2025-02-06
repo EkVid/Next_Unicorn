@@ -1,4 +1,5 @@
 
+/* eslint-disable react/no-unescaped-entities */
 import Footer from "@/components/Footer";
 import Gradient from "@/components/Gradient";
 import Header from "@/components/Header";
