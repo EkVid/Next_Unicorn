@@ -14,7 +14,7 @@ export default function Home() {
       <div className="flex flex-col h-screen md:pt-60 pt-36">
         <div className="flex-1 flex flex-col items-center md:px-40 px-10">
           <div className="md:text-4xl text-2xl font-bold text-center">
-            Unicorns are not just a myth, the next one can be in your portfolio
+            Unicorns are not just myth, the next one can be in your portfolio
           </div>
           <div className="text-sm font-semibold text-center md:w-1/2 lg:w-1/3 w-3/4 pt-10">
             Empowering startups to soar and investors to explore
