@@ -2,7 +2,13 @@
 
 This is a mock server featuring a mock database. It is a simple authentication procedure.
 
-## How to run
+## How to run the server
+
+You need Node.js V22.60 and after because `--experimental-strip-types` will have to be used.
+
+Just install using `npm i` based on the `package.json`, and then run with `node --experimental-strip-types express.js`. The server will output any inputs sent.
+
+## How to use the API
 
 Just use curl.
 
