@@ -14,7 +14,7 @@ export default function Home() {
       <div className="flex flex-col h-screen md:pt-60 pt-36">
         <div className="flex-1 flex flex-col items-center md:px-40 px-10">
           <div className="md:text-4xl text-2xl font-bold text-center">
-            Unicorns are not just myth, the next one can be in your portfolio
+            Unicorns aren't just myths, the next one can be in your portfolio.
           </div>
           <div className="text-sm font-semibold text-center md:w-1/2 lg:w-1/3 w-3/4 pt-10">
             Empowering startups to soar and investors to explore
@@ -59,7 +59,7 @@ export default function Home() {
             </div>
             <input type="text" placeholder="Subject(Investor/Startup)" className="p-4 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl bg-transparent w-[100%]" />
             <textarea placeholder="Tell us something" className="p-4 border border-solid border-black/[.08] dark:border-white/[.145] rounded-xl bg-transparent w-[100%]" />
-            <button className="bg-[#f2f2f2] dark:bg-[transparent] text-md dark:text-white p-2 rounded-[80] border-solid border border-white/[.5] w-64">Send to Next Unicorn</button>
+            <button className="bg-[#f2f2f2] dark:bg-[transparent] text-md dark:text-white p-2 rounded-[40px] border-solid border border-white/[.5] w-64">Send to Next Unicorn</button>
           </div>
         </div>
         <Footer />
