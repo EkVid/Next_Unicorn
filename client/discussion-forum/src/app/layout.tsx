@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next Unicorn",
-  description: "Inevest. Grow. Repeat!",
+  title: "Unicom",
+  description: "Discussion Forum by Next Unicorn",
 };
 
 export default function RootLayout({
