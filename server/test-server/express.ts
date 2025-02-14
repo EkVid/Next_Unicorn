@@ -19,7 +19,6 @@ app.get("/circle/:radius", function (req, res) {
   res.send(`A circle of radius ${req.params.radius} units has perimeter ${circle.perimeter(req.params.radius)} units and ${circle.area(req.params.radius)} square units.`);
 });
 
-/* Mock for building middleware */
 app.use(express.urlencoded())
 app.use(session({
   resave: false, // don't save session if unmodified
@@ -36,7 +35,6 @@ app.use(function(req, res, next){
   next();
 });
 
-/* Mock for login */
 const INVESTOR = 1;
 const COMPANY = 2;
 const ADMIN = 0;
@@ -174,6 +172,40 @@ app.get('/restricted', restrict, function(req, res, next){
   res.status(200).json(`User ${req.session.user} is in the restricted page.`);
 });
 
+/* New functions */
+app.post('/auth/register', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.post('/auth/login', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.get('/auth/profile', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.put('/auth/update-profile', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.post('/companies', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.get('/companies/:id', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.post('/investments', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.get('/investments/:investor_id', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+/* Listen */
 app.listen(port, function () {
   console.log(`Example app listening on port ${port}!`);
 });
