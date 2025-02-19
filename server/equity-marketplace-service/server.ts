@@ -3,6 +3,11 @@ const app = express();
 const port = 3002;
 const SERVICE_KEY = 'SUPABASE_SERVICE_KEY'
 
+var path = require('node:path');
+var session = require('express-session');
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
 /* Connect to DBs */
 const sjs = require('@supabase/supabase-js');
 const supabaseUrl = 'https://bxlkrekpshmetjmsuapm.supabase.co'

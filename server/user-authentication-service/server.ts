@@ -3,6 +3,11 @@ const app = express();
 const port = 3001;
 const SERVICE_KEY = 'SUPABASE_SERVICE_KEY'
 
+var path = require('node:path');
+var session = require('express-session');
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
 /* Connect to DBs */
 const sjs = require('@supabase/supabase-js');
 const supabaseUrl = 'https://bxlkrekpshmetjmsuapm.supabase.co'
@@ -12,7 +17,7 @@ if (!supabaseKey) {
 }
 const supabase = sjs.createClient(supabaseUrl, supabaseKey);
 
-/* New functions */
+/* API calls */
 app.post('/auth/register', async function (req, res, next) {
   // Name, email, and hash are the only three required and needed
   if (!req.body?.name || !req.body?.email || !req.body?.password_hash) {
@@ -20,10 +25,10 @@ app.post('/auth/register', async function (req, res, next) {
   }
   const { data, error } = await supabase
     .from('users')
-    .insert({ name: req.body.name, email: req.body.email, password_hash: req.body.password_hash })
+    .insert({ name: req.body?.name, email: req.body?.email, password_hash: req.body?.password_hash })
+    .select();
   // Middleware to be written
   console.info(data);
-  console.info(error);
   res.send(error ? error : data);
 });
 
@@ -35,13 +40,15 @@ app.post('/auth/login', async function (req, res, next) {
   const { data, error } = await supabase
     .from('users')
     .select()
-    .eq('email', req.body.email)
-    .eq('password_hash', req.body.password_hash);
+    .eq('email', req.body?.email)
+    .eq('password_hash', req.body?.password_hash);
   // Middleware to be written
+  console.info(data);
   res.send(error ? error : data);
 });
 
 app.get('/auth/profile', async function (req, res, next) {
+  // Right now it displays all the user profiles
   const { data, error } = await supabase
     .from('users')
     .select();
@@ -51,13 +58,15 @@ app.get('/auth/profile', async function (req, res, next) {
 });
 
 app.put('/auth/update-profile', async function (req, res, next) {
-  console.info(req.body.values);
+  // Uses the values JSON to update
+  console.log(req.body.values)
   const { data, error } = await supabase
     .from('users')
-    .update(req.body.values)
-    .eq('email', req.body.email)
-    .eq('password_hash', req.body.password_hash)
+    .update(req.body?.values)
+    .eq('email', req.body?.email)
+    .eq('password_hash', req.body?.password_hash)
     .select();
+  // Middleware to be written
   console.info(data);
   res.send(error ? error : data);
 });

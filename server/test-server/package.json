@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "npm i",
+    "build": "npm i --save-dev @types/node",
     "dev": "node --experimental-strip-types ./express.ts"
   },
   "dependencies": {
