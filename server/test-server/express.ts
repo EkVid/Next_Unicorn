@@ -2,6 +2,10 @@ const express = require("express");
 const app = express();
 const port = 3001;
 
+/* Special constants */
+const SERVICE_KEY = 'SUPABASE_SERVICE_KEY'
+
+/* Express */
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true }))
 
@@ -9,7 +13,14 @@ var path = require('node:path');
 var hash = require('pbkdf2-password')()
 var session = require('express-session');
 
-/* Connect to DB */
+/* Connect to DBs */
+const sjs = require('@supabase/supabase-js');
+const supabaseUrl = 'https://bxlkrekpshmetjmsuapm.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY;
+if (!supabaseKey) {
+  throw new Error("SUPABASE_KEY is not defined");
+}
+const supabase = sjs.createClient(supabaseUrl, supabaseKey);
 // const pgp = require('pg-promise')(/* options */)
 // const db = pgp('postgres://uidname:password@host:port/database')
 
@@ -19,7 +30,6 @@ app.get("/circle/:radius", function (req, res) {
   res.send(`A circle of radius ${req.params.radius} units has perimeter ${circle.perimeter(req.params.radius)} units and ${circle.area(req.params.radius)} square units.`);
 });
 
-/* Mock for building middleware */
 app.use(express.urlencoded())
 app.use(session({
   resave: false, // don't save session if unmodified
@@ -36,7 +46,6 @@ app.use(function(req, res, next){
   next();
 });
 
-/* Mock for login */
 const INVESTOR = 1;
 const COMPANY = 2;
 const ADMIN = 0;
@@ -174,6 +183,73 @@ app.get('/restricted', restrict, function(req, res, next){
   res.status(200).json(`User ${req.session.user} is in the restricted page.`);
 });
 
+/* New functions */
+app.post('/auth/register', async function (req, res, next) {
+  // Name, email, and hash are the only three required and needed
+  if (!req.body.name || !req.body.email || !req.body.password_hash) {
+    res.status(401, "Bad request: name, email, and password_hash are required.");
+  }
+  const { data, error } = await supabase
+    .from('users')
+    .insert({ name: req.body.name, email: req.body.email, password_hash: req.body.password_hash })
+  // Middleware to be written
+  console.info(data);
+  console.info(error);
+  res.send(error ? error : data);
+});
+
+app.post('/auth/login', async function (req, res, next) { 
+  // Name, email, and hash are the only three required and needed
+  if (!req.body.name || !req.body.email || !req.body.password_hash) {
+    res.status(401, "Bad request: name, email, and password_hash are required.");
+  }
+  const { data, error } = await supabase
+    .from('users')
+    .select()
+    .eq('email', req.body.email)
+    .eq('password_hash', req.body.password_hash);
+  // Middleware to be written
+  res.send(error ? error : data);
+});
+
+app.get('/auth/profile', async function (req, res, next) {
+  const { data, error } = await supabase
+    .from('users')
+    .select();
+  // Middleware to be written
+  console.info(data);
+  res.send(error ? error : data);
+});
+
+app.put('/auth/update-profile', async function (req, res, next) {
+  console.info(req.body.values);
+  const { data, error } = await supabase
+    .from('users')
+    .update(req.body.values)
+    .eq('email', req.body.email)
+    .eq('password_hash', req.body.password_hash)
+    .select();
+  console.info(data);
+  res.send(error ? error : data);
+});
+
+app.post('/companies', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.get('/companies/:id', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.post('/investments', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+app.get('/investments/:investor_id', function (req, res, next) {
+  res.status(666).json("NOT IMPLEMENTED");
+});
+
+/* Listen */
 app.listen(port, function () {
   console.log(`Example app listening on port ${port}!`);
 });

@@ -4,10 +4,12 @@
     "dev": "node --experimental-strip-types ./express.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.48.1",
     "cjs": "^0.0.11",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "pbkdf2-password": "^1.2.1"
+    "pbkdf2-password": "^1.2.1",
+    "supabase": "^2.12.1"
   }
 }

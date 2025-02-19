@@ -3,13 +3,17 @@
 # dependencies
 node_modules
 node_modules/*
-/.pnp
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+
+# secrets
+secrets
+.secrets
 
 # testing
 /coverage
