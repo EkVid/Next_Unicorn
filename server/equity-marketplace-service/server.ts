@@ -20,32 +20,81 @@ const supabase = sjs.createClient(supabaseUrl, supabaseKey);
 /* New functions */
 app.post('/companies', async function (req, res, next) {
   // Name, email, and hash are the only three required and needed
-  if (!req.body || !req.body?.email || !req.body?.description) {
-    res.status(401, "Bad request: representative email and description are required.");
+  if (!req.body || !req.body?.email || !req.body?.password_hash || !req.body?.description) {
+    res.status(400, "Bad request: representative email and description are required.");
   }
-  console.info(req.body);
+  console.info(1, req.body);
   const { data, error } = await supabase
     .from('users')
-    .select('email')
+    .select('id')
     .eq('email', req.body?.email)
-  const uid = data[0].email
-  if (data.length == 0) {
-    res.status(400, "user not found");
+    .eq('password_hash', req.body?.password_hash)
+  if (data.length === 0) {
+    res.status(404, "user not found");
   }
   else {
-    const { data2, error } = await supabase
-      .from('companies')
-      .insert({ user_id: uid, description: req.body.description })
+    console.info(data[0]);
+    req.body.user_id = data[0].id;
+    next();
   }
   // Middleware to be written
+  res.send(error ? error : data);
+}, async function (req, res, next) {
+  console.info(2, req.body);
+  const { data, error } = await supabase
+      .from('companies')
+      .insert({ user_id: req.body.user_id, description: req.body?.description })
+      .select();
   console.info(data);
   console.info(error);
-  res.send(error ? error : data);
 });
 
 app.get('/companies/:id', async function (req, res, next) {
+  // Obtain company info by ID.
   const { data, error } = await supabase
     .from('companies')
+    .select()
+    .eq('id', req.params.id);
+  // Middleware to be written
+  console.info(data);
+  res.send(error ? error : data);
+});
+
+app.post('/investments', async function (req, res, next) {
+  // Name, email, and hash are the only three required and needed
+  if (!req.body || !req.body?.email || !req.body?.password_hash || !req.body?.company_id || !req.body?.amount) {
+    res.status(400, "Bad request: email with password, company ID, and amount required.");
+  }
+  console.info(1, req.body);
+  const { data, error } = await supabase
+    .from('users')
+    .select('id')
+    .eq('email', req.body?.email)
+    .eq('password_hash', req.body?.password_hash)
+  if (data.length === 0) {
+    res.status(404, "user not found");
+  }
+  else {
+    console.info(data[0]);
+    req.body.user_id = data[0].id;
+    next();
+  }
+  // Middleware to be written
+  res.send(error ? error : data);
+}, async function (req, res, next) {
+  console.info(2, req.body);
+  const { data, error } = await supabase
+      .from('investments')
+      .insert({ investor_id: req.body.user_id, company_id: req.body?.company_id, amount: req.body?.amount })
+      .select();
+  console.info(data);
+  console.info(error);
+});
+
+app.get('/investments/:id', async function (req, res, next) {
+  // Obtain company info by ID.
+  const { data, error } = await supabase
+    .from('investments')
     .select()
     .eq('id', req.params.id);
   // Middleware to be written

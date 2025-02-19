@@ -59,7 +59,6 @@ app.get('/auth/profile', async function (req, res, next) {
 
 app.put('/auth/update-profile', async function (req, res, next) {
   // Uses the values JSON to update
-  console.log(req.body.values)
   const { data, error } = await supabase
     .from('users')
     .update(req.body?.values)
