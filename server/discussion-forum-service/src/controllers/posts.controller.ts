@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
-import { posts } from "../data/mockDatabase";
 import PostModel, { Post } from "../models/post.model";
-import { v4 as uuidv4 } from "uuid";
+import CommentModel from "../models/comment.model";
 
 export const getPostById = async (req: Request, res: Response) => {
   try {
-    const { _id } = req.params;
-    const post: Post | null = await PostModel.findById(_id);
+    const { id } = req.params;
+    const post: Post | null = await PostModel.findById(id);
+    if (!post) {
+      throw new Error("Post not found");
+    }
     res.status(200).json(post);
   } catch (error: any) {
     res.status(404).json({ message: "Post not found", error: error.message });
@@ -15,8 +17,8 @@ export const getPostById = async (req: Request, res: Response) => {
 
 export const getUserPosts = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-    const userPosts: Post[] = await PostModel.find({ user_id: userId });
+    const { id } = req.params;
+    const userPosts: Post[] = await PostModel.find({ user_id: id });
     res.status(200).json(userPosts);
   } catch (error: any) {
     res
@@ -28,7 +30,7 @@ export const getUserPosts = async (req: Request, res: Response) => {
 export const getAllPosts = async (req: Request, res: Response) => {
   try {
     const posts: Post[] = await PostModel.find();
-    res.json(posts);
+    res.status(200).json(posts);
   } catch (error: any) {
     res
       .status(500)
@@ -38,10 +40,10 @@ export const getAllPosts = async (req: Request, res: Response) => {
 
 export const updatePost = async (req: Request, res: Response) => {
   try {
-    const { _id, updatedContent } = req.body;
+    const { id } = req.params;
     const post: Post | null = await PostModel.findOneAndUpdate(
-      _id,
-      updatedContent,
+      { _id: id },
+      req.body,
       { new: true }
     );
     res.status(200).json(post);
@@ -51,33 +53,45 @@ export const updatePost = async (req: Request, res: Response) => {
 };
 
 export const createPost = async (req: Request, res: Response) => {
-  const { title, content, tags } = req.body;
-  if (!title || !content) {
-    return res.status(400).json({ message: "Title and content are required" });
+  try {
+    const { user_id, title, content, tags } = req.body;
+    if (!title || !content) {
+      return res
+        .status(400)
+        .json({ message: "Title and content are required" });
+    }
+
+    const newPost = {
+      user_id: user_id,
+      title,
+      content,
+      tags: tags || [],
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      // Likes and comments begin at 0, by model default
+    };
+
+    const createdPost = await new PostModel(newPost).save();
+
+    res.status(201).json(createdPost);
+  } catch (error: any) {
+    if (error.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ error: "Validation error: " + error.message });
+    }
+    res.status(500).json({ error: error.message });
   }
-
-  const newPost = {
-    user_id: uuidv4(),
-    title,
-    content,
-    tags: tags || [],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    likes: 0,
-    comments_count: 0,
-  };
-
-  await new PostModel(newPost).save();
-
-  res.status(201).json(newPost);
 };
 
 export const deletePost = async (req: Request, res: Response) => {
+  // Delete post, and all associated comments
   try {
     const { id } = req.params;
     await PostModel.findByIdAndDelete(id);
+    await CommentModel.deleteMany({ post_id: id });
     // The query above could result in returning a post or null, either way it doesn't matter
-    res.status(200);
+    res.status(200).send();
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

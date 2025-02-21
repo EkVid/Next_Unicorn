@@ -19,11 +19,11 @@ const postSchema = new Schema<Post>({
   tags: { type: [String], required: true },
   created_at: { type: String, required: true },
   updated_at: { type: String, required: true },
-  likes: { type: Number, required: true },
-  comments_count: { type: Number, required: true },
+  likes: { type: Number, default: 0, required: true },
+  comments_count: { type: Number, default: 0, required: true },
 });
 
 // Model Creation
-const PostModel = model<Post>("User", postSchema);
+const PostModel = model<Post>("Post", postSchema);
 
 export default PostModel;
