@@ -10,8 +10,8 @@
   "scripts": {
     "dev": "dotenvx run -f .env.local -- nodemon src/server.ts ",
     "build": "tsc",
-    "start": "dotenvx run -f .env.production -- node dist/server.js",
-    "test": "jest --watch"
+    "start": "dotenvx run -f .env -- node dist/server.js",
+    "test": "dotenvx run -f .env.local -- jest --watch"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.37.0",

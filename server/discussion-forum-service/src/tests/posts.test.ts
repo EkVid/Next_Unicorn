@@ -2,11 +2,11 @@ import { mockPosts } from "../data/mockDatabase";
 import mongoose from "mongoose";
 import request from "supertest";
 import app from "../app";
-import "dotenv/config";
+import "@dotenvx/dotenvx/config";
 
 /* Connecting to the database before each test. */
 beforeEach(async () => {
-  await mongoose.connect(process.env.MONGODB_LOCAL!);
+  await mongoose.connect(process.env.MONGODB_CONNECTION!);
 });
 
 // POST request tests
