@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import PostModel, { Post } from "../models/post.model";
+import PostModel, { IPost } from "../models/post.model";
 import CommentModel from "../models/comment.model";
 
 export const getPostById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const post: Post | null = await PostModel.findById(id);
+    const post: IPost | null = await PostModel.findById(id);
     if (!post) {
       throw new Error("Post not found");
     }
@@ -18,7 +18,7 @@ export const getPostById = async (req: Request, res: Response) => {
 export const getUserPosts = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userPosts: Post[] = await PostModel.find({ user_id: id });
+    const userPosts: IPost[] = await PostModel.find({ user_id: id });
     res.status(200).json(userPosts);
   } catch (error: any) {
     res
@@ -29,7 +29,7 @@ export const getUserPosts = async (req: Request, res: Response) => {
 
 export const getAllPosts = async (req: Request, res: Response) => {
   try {
-    const posts: Post[] = await PostModel.find();
+    const posts: IPost[] = await PostModel.find();
     res.status(200).json(posts);
   } catch (error: any) {
     res
@@ -41,7 +41,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const post: Post | null = await PostModel.findOneAndUpdate(
+    const post: IPost | null = await PostModel.findOneAndUpdate(
       { _id: id },
       req.body,
       { new: true }

@@ -11,7 +11,7 @@ beforeEach(async () => {
 
 // POST request tests
 describe("POST /api/posts", () => {
-  it("return 201 & Post data ==> deletes Post", async () => {
+  it("creates a Post", async () => {
     const { created_at, updated_at, ...post_data } = mockPosts[0];
 
     const res = await request(app).post("/api/posts").send(mockPosts[0]);
@@ -29,7 +29,7 @@ describe("POST /api/posts", () => {
     expect(deletion.status).toEqual(200);
   });
 
-  it("return 400 since Post data is bad", async () => {
+  it("fails since Post data is bad", async () => {
     const { title, content, ...post_data } = mockPosts[0];
     const res = await request(app)
       .post("/api/posts")
@@ -49,7 +49,7 @@ describe("GET /api/posts", () => {
     expect(res.body.length).toBeGreaterThanOrEqual(0);
   });
 
-  it("create a Post, then get it by ID ==> delete Post", async () => {
+  it("gets a created Post by Post ID", async () => {
     const { created_at, updated_at, ...post_data } = mockPosts[0];
 
     // Create a post, then retreive it
@@ -70,7 +70,7 @@ describe("GET /api/posts", () => {
     expect(deletion.status).toEqual(200);
   });
 
-  it("create a Post, then get it by user id ==> deletes Post", async () => {
+  it("get's a created post by User ID", async () => {
     const { created_at, updated_at, ...post_data } = mockPosts[0];
 
     // Create a post, then retreive it
@@ -101,7 +101,7 @@ describe("GET /api/posts", () => {
 
 // PATCH tests
 describe("PATCH /api/posts", () => {
-  it("create Post, update it ==> deletes Post", async () => {
+  it("updates a created post", async () => {
     const { created_at, updated_at, likes, ...post_data } = mockPosts[0];
     const res = await request(app).post("/api/posts").send(mockPosts[0]);
 

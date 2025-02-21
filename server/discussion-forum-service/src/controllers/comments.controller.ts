@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import CommentModel, { Comment } from "../models/comment.model";
-import PostModel, { Post } from "../models/post.model";
+import CommentModel, { IComment } from "../models/comment.model";
+import PostModel, { IPost } from "../models/post.model";
 import { Types } from "mongoose";
 
 export const createComment = async (req: Request, res: Response) => {
@@ -13,12 +13,12 @@ export const createComment = async (req: Request, res: Response) => {
         .json({ message: "Valid Post ID and content are required" });
     }
     // Find the post, add the comment to it, and increase it's comments count
-    const post: Post | null = await PostModel.findOne({ _id: post_id });
+    const post: IPost | null = await PostModel.findOne({ _id: post_id });
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const newComment: Comment = {
+    const newComment: IComment = {
       post_id: post_id,
       user_id: user_id,
       content: content,
@@ -27,7 +27,7 @@ export const createComment = async (req: Request, res: Response) => {
     };
 
     const createdComment = await new CommentModel(newComment).save();
-    const updatedPost: Post | null = await PostModel.findOneAndUpdate(
+    const updatedPost: IPost | null = await PostModel.findOneAndUpdate(
       { post_id: post_id },
       { comments_count: (post.comments_count += 1) },
       { new: true }
@@ -53,7 +53,7 @@ export const createComment = async (req: Request, res: Response) => {
 export const getCommentsByPostId = async (req: Request, res: Response) => {
   try {
     const { post_id } = req.params;
-    const comments: Comment[] | null = await CommentModel.find({
+    const comments: IComment[] | null = await CommentModel.find({
       post_id: post_id,
     });
     res.status(200).json(comments);
@@ -70,7 +70,7 @@ export const getCommentsByPostId = async (req: Request, res: Response) => {
 export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { comment_id } = req.params;
-    const comment: Comment | null = await CommentModel.findByIdAndDelete(
+    const comment: IComment | null = await CommentModel.findByIdAndDelete(
       comment_id
     );
     if (comment != null) {
