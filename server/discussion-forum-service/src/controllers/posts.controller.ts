@@ -14,6 +14,18 @@ export const getPostById = (req: Request, res: Response) => {
   res.json(post);
 };
 
+export const deletePostById = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const index = posts.findIndex((p) => p._id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  posts.splice(index, 1);
+  res.json({ message: "Post deleted successfully" });
+};
+
 export const createPost = (req: Request, res: Response) => {
   const { title, content, tags } = req.body;
   if (!title || !content) {

@@ -5,7 +5,7 @@ export const posts = [
     _id: "1",
     user_id: uuidv4(),
     title: "How can someone invest in private equity?",
-    content: "Is there a way to invest a samall amount (say $100) in unlisted companies?",
+    content: "Is there a way to invest a small amount (say $100) in unlisted companies?",
     tags: ["investing", "equity"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
