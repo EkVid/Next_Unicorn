@@ -1,49 +1,68 @@
 import { Request, Response } from "express";
-import { posts } from "../data/mockDatabase";
-import { Post } from "../models/post.model";
+import { PostModel } from "../models/post.model";
 import { v4 as uuidv4 } from "uuid";
 
-export const getAllPosts = (req: Request, res: Response) => {
-  res.json(posts);
-};
-
-export const getPostById = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const post = posts.find((p) => p._id === id);
-  if (!post) return res.status(404).json({ message: "Post not found" });
-  res.json(post);
-};
-
-export const deletePostById = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const index = posts.findIndex((p) => p._id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ message: "Post not found" });
+// Get all posts
+export const getAllPosts = async (req: Request, res: Response) => {
+  try {
+    const posts = await PostModel.find();
+    // console.log(posts);
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching posts", error });
   }
-
-  posts.splice(index, 1);
-  res.json({ message: "Post deleted successfully" });
 };
 
-export const createPost = (req: Request, res: Response) => {
-  const { title, content, tags } = req.body;
-  if (!title || !content) {
-    return res.status(400).json({ message: "Title and content are required" });
+// Get post by ID
+export const getPostById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const post = await PostModel.findById(id);
+
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    res.json(post);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching post", error });
   }
+};
 
-  const newPost: Post = {
-    _id: uuidv4(),
-    user_id: uuidv4(),
-    title,
-    content,
-    tags: tags || [],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    likes: 0,
-    comments_count: 0,
-  };
+// Delete post by ID
+export const deletePostById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const post = await PostModel.findByIdAndDelete(id);
 
-  posts.push(newPost);
-  res.status(201).json(newPost);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    res.json({ message: "Post deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting post", error });
+  }
+};
+
+// Create a new post
+export const createPost = async (req: Request, res: Response) => {
+  try {
+    const { title, content, tags } = req.body;
+    if (!title || !content) {
+      return res.status(400).json({ message: "Title and content are required" });
+    }
+
+    const newPost = new PostModel({
+      _id: uuidv4(),
+      title,
+      content,
+      tags: tags || [],
+      created_at: new Date(),
+      updated_at: new Date(),
+      likes: 0,
+      comments_count: 0,
+    });
+
+    const savedPost = await newPost.save();
+    res.status(201).json(savedPost);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating post", error });
+  }
 };
