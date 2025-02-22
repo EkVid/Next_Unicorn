@@ -1,5 +1,6 @@
-export interface Post {
-  _id: string;
+import { Schema, model } from "mongoose";
+export interface IPost {
+  //_id is auto-generated on object creation https://www.mongodb.com/docs/manual/reference/glossary/#term-id
   user_id: string;
   title: string;
   content: string;
@@ -9,3 +10,25 @@ export interface Post {
   likes: number;
   comments_count: number;
 }
+
+// Schema corresponding to Post interface
+const postSchema = new Schema<IPost>(
+  {
+    user_id: { type: String, required: true },
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    tags: { type: [String], required: true },
+    created_at: { type: String, required: true },
+    updated_at: { type: String, required: true },
+    likes: { type: Number, default: 0, required: true },
+    comments_count: { type: Number, default: 0, required: true },
+  },
+  {
+    collection: "posts",
+  }
+);
+
+// Model Creation
+const PostModel = model<IPost>("Post", postSchema);
+
+export default PostModel;
