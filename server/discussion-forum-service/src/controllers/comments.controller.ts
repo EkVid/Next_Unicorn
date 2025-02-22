@@ -19,7 +19,7 @@ export const addComment = async (req: Request, res: Response) => {
   const newComment = new Comment({
     _id: uuidv4(), // Generate a new ID
     post_id,
-    user_id: uuidv4(), // You can update this to get a real user ID (e.g., from the session or JWT)
+    // user_id: uuidv4(), // TODO: remains a false id until this point.
     content,
     created_at: new Date().toISOString(),
     likes: 0,
@@ -33,7 +33,6 @@ export const addComment = async (req: Request, res: Response) => {
   post.comments_count++;
   await post.save();
 
-  // Respond with the new comment
   res.status(201).json(newComment);
 };
 
@@ -41,7 +40,6 @@ export const addComment = async (req: Request, res: Response) => {
 export const getCommentsByPostId = async (req: Request, res: Response) => {
   const { post_id } = req.params;
 
-  // Find comments for the specific post
   const comments = await Comment.find({ post_id });
 
   if (comments.length === 0) {

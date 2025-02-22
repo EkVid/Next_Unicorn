@@ -2,18 +2,17 @@ import { Request, Response } from "express";
 import { PostModel } from "../models/post.model";
 import { v4 as uuidv4 } from "uuid";
 
-// Get all posts
+// Get all posts available in database
 export const getAllPosts = async (req: Request, res: Response) => {
   try {
     const posts = await PostModel.find();
-    // console.log(posts);
     res.json(posts);
   } catch (error) {
     res.status(500).json({ message: "Error fetching posts", error });
   }
 };
 
-// Get post by ID
+// Get specific post by ID (path param)
 export const getPostById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -27,7 +26,7 @@ export const getPostById = async (req: Request, res: Response) => {
   }
 };
 
-// Delete post by ID
+// Delete specific post by ID (path param)
 export const deletePostById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -41,7 +40,7 @@ export const deletePostById = async (req: Request, res: Response) => {
   }
 };
 
-// Create a new post
+// Create a new post with body
 export const createPost = async (req: Request, res: Response) => {
   try {
     const { title, content, tags } = req.body;
