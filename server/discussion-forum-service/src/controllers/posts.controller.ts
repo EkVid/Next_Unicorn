@@ -40,6 +40,20 @@ export const deletePostById = async (req: Request, res: Response) => {
   }
 };
 
+// original delete by reference
+// export const deletePost = async (req: Request, res: Response) => {
+//   // Delete post, and all associated comments
+//   try {
+//     const { id } = req.params;
+//     await PostModel.findByIdAndDelete(id);
+//     await CommentModel.deleteMany({ post_id: id });
+//     // The query above could result in returning a post or null, either way it doesn't matter
+//     res.status(200).send();
+//   } catch (error: any) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
 // Create a new post with body
 export const createPost = async (req: Request, res: Response) => {
   try {
@@ -65,3 +79,5 @@ export const createPost = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error creating post", error });
   }
 };
+
+

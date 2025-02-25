@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IPost extends Document {
+  //_id is auto-generated on object creation https://www.mongodb.com/docs/manual/reference/glossary/#term-id
   _id: string;
   title: string;
   content: string;
