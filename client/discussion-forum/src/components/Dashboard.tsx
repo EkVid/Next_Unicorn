@@ -6,7 +6,7 @@ export default function Dashboard() {
   return (
     <div className="bg-white min-h-screen text-white">
       <Header />
-      <main className="pt-16 md:pt-20 px-2 md:px-16">
+      <main className="pt-16 md:pt-20 px-2 md:px-16">ss
         <CreatePostPrompt />
         <PostList />
       </main>
